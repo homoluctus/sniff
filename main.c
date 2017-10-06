@@ -11,7 +11,7 @@
 
 int main(void)
 {
-  /* the number to capture packets */
+  /* the number to capture packets (default: 5 packets) */
   int count = 5;
   /* type field of ethernet header */
   u_int type;
