@@ -35,8 +35,7 @@ void disp_icmp(void)
 
   icmp_h = (struct icmphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("ICMP Message type = %d  Code = %d",
-          icmp_h->type, icmp_h->code);
+  printf("ICMP Message type = %d  Code = %d", icmp_h->type, icmp_h->code);
 }
 
 void disp_tcp(void)
@@ -60,6 +59,5 @@ void disp_udp(void)
 
   udp_h = (struct udphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("UDP  %17d > %-17d",
-          ntohs(udp_h->source), ntohs(udp_h->dest));
+  printf("UDP  %17d > %-17d", ntohs(udp_h->source), ntohs(udp_h->dest));
 }

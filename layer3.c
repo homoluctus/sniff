@@ -95,9 +95,11 @@ void disp_arp(void)
     case 1:
       printf("Request  ");
       break;
+
     case 2:
       printf("Reply  ");
       break;
+
     default:
       break;
   }

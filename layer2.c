@@ -12,6 +12,7 @@ int layer2(void)
 {
   u_int type;
   struct ether_header *ether_h;
+
   ether_h = (struct ether_header *)buf;
 
   printf("L2 | MAC  ");
@@ -46,7 +47,6 @@ int layer2(void)
       putchar('\n');
       break;
   }
-
   return type;
 }
 

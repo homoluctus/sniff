@@ -11,20 +11,27 @@
 
 int main(void)
 {
-  int count = 5;    /* the number to capture packets */
-  u_int type;    /* type field of ethernet header */
-  u_int protocol;    /* protocol field of ipv4 header */
+  /* the number to capture packets */
+  int count = 5;
+  /* type field of ethernet header */
+  u_int type;
+  /* protocol field of ipv4 header */
+  u_int protocol;
 
+  /* create socket */
   init();
 
   while (count-- > 0) {
     receive_packet();
 
+    /* for layer 2 protocols */
     type = layer2();
 
+    /* for layer 3 protocols */
     protocol = layer3(type);
 
     if (protocol > 0) {
+      /* for layer 4 protocols */
       layer4(protocol);
     }
     putchar('\n');
