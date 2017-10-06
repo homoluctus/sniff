@@ -6,6 +6,8 @@ This is CUI application
 
 Supported protocols are Ethernet, IPv4, IPv6, ARP, TCP, UDP and ICMP
 
+By defalut, this sniffer captures 5 packets
+
 # Usage
 ```
 $ git clone https://github.com/homoluctus/sniffer.git
