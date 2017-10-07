@@ -4,9 +4,18 @@ guaranteed OS is only Ubuntu 16.04.3 LTS (maybe, it works normally on Linux)
 # Description
 This is CUI application
 
-Supported protocols are Ethernet, IPv4, IPv6, ARP, TCP, UDP and ICMP
+Supported protocols
+- Ethernet
+- IPv4
+- IPv6
+- ARP
+- TCP
+- UDP
+- ICMP
 
 By defalut, this sniffer captures 5 packets
+
+If you want to continue capturing packets infinitely, you change argument of while function on main.c from default to 1
 
 # Usage
 ```
