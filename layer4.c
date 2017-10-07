@@ -25,6 +25,9 @@ void layer4(u_int protocol)
     case 17:
       disp_udp();
       break;
+
+    default:
+      break;
   }
   putchar('\n');
 }

@@ -24,14 +24,14 @@ int main(void)
   while (count-- > 0) {
     receive_packet();
 
-    /* for layer 2 protocols */
+    /* for layer 2 protocol */
     type = layer2();
 
-    /* for layer 3 protocols */
+    /* for layer 3 protocol */
     protocol = layer3(type);
 
     if (protocol > 0) {
-      /* for layer 4 protocols */
+      /* for layer 4 protocol */
       layer4(protocol);
     }
     putchar('\n');

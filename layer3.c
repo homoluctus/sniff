@@ -20,22 +20,22 @@ int layer3(u_int type)
   switch (type) {
     case ETHERTYPE_IP:
       p = disp_ipv4();
-      putchar('\n');
       return p;
 
     case ETHERTYPE_IPV6:
-      disp_ipv6();
-      break;
+      p = disp_ipv6();
+      return p;
 
     case ETHERTYPE_ARP:
       disp_arp();
       break;
 
     default:
+      putchar('\n');
       break;
   }
-  putchar('\n');
 
+  /* return -1 to avoid duplication with protocol number */
   return -1;
 }
 
@@ -61,11 +61,12 @@ int disp_ipv4(void)
                             sizeof(addr)));
 
   printf("  Upper layer protocol = %d", ip4_h->protocol);
+  putchar('\n');
 
   return ip4_h->protocol;
 }
 
-void disp_ipv6(void)
+int disp_ipv6(void)
 {
   struct ip6_hdr *ip6_h;
 
@@ -80,6 +81,12 @@ void disp_ipv6(void)
                         (const void *)ip6_h->ip6_dst.s6_addr,
                         addr,
                         sizeof(addr)));
+
+  printf("  Next header = %d", ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt);
+  putchar('\n');
+
+  /* return protocol number of next header */
+  return ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt;
 }
 
 void disp_arp(void)
@@ -104,4 +111,5 @@ void disp_arp(void)
       break;
   }
   printf("(Opecode = %d)", op);
+  putchar('\n');
 }
