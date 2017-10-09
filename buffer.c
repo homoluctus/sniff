@@ -22,10 +22,10 @@ void ip_hex(void)
 {
   int i;
   u_int8_t *p = buf + ETH_HLEN;
-  int len = p[0] & 0x0f;    /* header length */
+  int len = (p[0] & 0x0f) * 4;    /* header length */
 
   printf("L3 | ");
-  for (i = 0; i < len*4; i++) {
-    printf("%02x%c", p[i], i == len*4 - 1 ? '\n' : ' ');
+  for (i = 0; i < len; i++) {
+    printf("%02x%c", p[i], i == len - 1 ? '\n' : ' ');
   }
 }
