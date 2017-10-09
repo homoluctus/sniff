@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "capture.h"
+#include "init.h"
 #include "layer2.h"
 
 /* storing a received packet */

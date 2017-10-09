@@ -4,7 +4,7 @@
  */
 
 #include <stdio.h>
-#include "capture.h"
+#include "init.h"
 #include "layer2.h"
 #include "layer3.h"
 #include "layer4.h"

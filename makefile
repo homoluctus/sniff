@@ -1,6 +1,6 @@
 CC=gcc
 TARGET=main
-SRCS=main.c layer2.c layer3.c layer4.c capture.c
+SRCS=main.c layer2.c layer3.c layer4.c init.c
 OBJS=$(SRCS:.c=.o)
 CFLAGS=-Wall
 RM=rm -f

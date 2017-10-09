@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
-#include "capture.h"
+#include "init.h"
 
 int sock;
 /* to store a received packet */
