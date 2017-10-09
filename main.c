@@ -30,10 +30,14 @@ int main(void)
     /* for layer 3 protocol */
     protocol = layer3(type);
 
-    if (protocol > 0) {
-      /* for layer 4 protocol */
-      layer4(protocol);
+    if (protocol == -1) {
+      putchar('\n');
+      continue;
     }
+
+    /* for layer 4 protocol */
+    layer4(protocol);
+
     putchar('\n');
   }
 
