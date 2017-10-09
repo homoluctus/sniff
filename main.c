@@ -28,9 +28,7 @@ int main(void)
     type = layer2();
 
     /* for layer 3 protocol */
-    protocol = layer3(type);
-
-    if (protocol == -1) {
+    if ((protocol = layer3(type)) == -1) {
       putchar('\n');
       continue;
     }
