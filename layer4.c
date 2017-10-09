@@ -43,7 +43,44 @@ void disp_icmp(void)
 
   icmp_h = (struct icmphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("ICMP Message type = %d  Code = %d", icmp_h->type, icmp_h->code);
+  u_int8_t type = icmp_h->type;
+  printf("ICMP Message type = %d (%s)  Code = %d", type, icmp_type(type), icmp_h->code);
+}
+
+char *icmp_type(u_int8_t type)
+{
+  char *str;
+
+  switch (type) {
+    case 0:
+      str = "ECHO REPLY";
+      break;
+
+    case 3:
+      str = "DESTINATION UNREACHABLE";
+      break;
+
+    case 4:
+      str = "SOURCE QUENCH";
+      break;
+
+    case 5:
+      str = "REDIRECT";
+      break;
+
+    case 8:
+      str = "ECHO REQUEST";
+      break;
+
+    case 11:
+      str = "TIME EXCEEDED";
+      break;
+
+    default:
+      str = "UNKNOWN";
+      break;
+  }
+  return str;
 }
 
 void disp_igmp(void)
