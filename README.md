@@ -12,6 +12,7 @@ Supported protocols
 - TCP
 - UDP
 - ICMP
+- IGMP
 
 By defalut, this sniffer captures 5 packets
 
