@@ -16,7 +16,7 @@ void layer4(u_int protocol)
   printf("L4 | ");
   switch (protocol) {
     case 1:
-      disp_icmp();
+      disp_icmp4();
       break;
 
     case 2:
@@ -37,17 +37,17 @@ void layer4(u_int protocol)
   putchar('\n');
 }
 
-void disp_icmp(void)
+void disp_icmp4(void)
 {
   struct icmphdr *icmp_h;
 
   icmp_h = (struct icmphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
   u_int8_t type = icmp_h->type;
-  printf("ICMP Message type = %d (%s)  Code = %d", type, icmp_type(type), icmp_h->code);
+  printf("ICMP Message type = %d (%s)  Code = %d", type, icmp4_type(type), icmp_h->code);
 }
 
-char *icmp_type(u_int8_t type)
+char *icmp4_type(u_int8_t type)
 {
   char *str;
 

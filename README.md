@@ -11,7 +11,7 @@ Supported protocols
 - ARP
 - TCP
 - UDP
-- ICMP
+- ICMPv4
 - IGMP
 
 By defalut, this sniffer captures 5 packets
