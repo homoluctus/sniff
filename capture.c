@@ -3,14 +3,13 @@
 #include <sys/socket.h>
 #include "capture.h"
 
-int packet;
+int sock;
 /* to store a received packet */
 char buf[2000];
 
 int init(void)
 {
-  packet = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-  if ((packet) == -1) {
+  if ((sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL))) < 0) {
     puts("Socket error !!");
     exit(1);
   }
@@ -22,7 +21,7 @@ int receive_packet(void)
   struct sockaddr src_addr;
   socklen_t size = sizeof(src_addr);
 
-  if (recvfrom(packet, buf, sizeof(buf), 0, &src_addr, &size) == -1) {
+  if (recvfrom(sock, buf, sizeof(buf), 0, &src_addr, &size) < 0) {
     puts("Can not capture packet");
     exit(1);
   }

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <netinet/ip_icmp.h>
+#include <netinet/igmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include "layer3.h"
@@ -16,6 +17,10 @@ void layer4(u_int protocol)
   switch (protocol) {
     case 1:
       disp_icmp();
+      break;
+
+    case 2:
+      disp_igmp();
       break;
 
     case 6:
@@ -39,6 +44,15 @@ void disp_icmp(void)
   icmp_h = (struct icmphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
   printf("ICMP Message type = %d  Code = %d", icmp_h->type, icmp_h->code);
+}
+
+void disp_igmp(void)
+{
+  struct igmp *igmp_h;
+
+  igmp_h = (struct igmp *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
+
+  printf("IGMP  %s", inet_ntoa(igmp_h->igmp_group));
 }
 
 void disp_tcp(void)

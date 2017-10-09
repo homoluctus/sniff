@@ -19,12 +19,10 @@ int layer3(u_int type)
   printf("L3 | ");
   switch (type) {
     case ETHERTYPE_IP:
-      p = disp_ipv4();
-      return p;
+      return disp_ipv4();
 
     case ETHERTYPE_IPV6:
-      p = disp_ipv6();
-      return p;
+      return disp_ipv6();
 
     case ETHERTYPE_ARP:
       disp_arp();

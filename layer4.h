@@ -5,6 +5,7 @@
 
 void layer4(u_int);
 void disp_icmp(void);
+void disp_igmp(void);
 void disp_tcp(void);
 void disp_udp(void);
 
