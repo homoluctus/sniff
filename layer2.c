@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "init.h"
+#include <arpa/inet.h>
+#include <net/ethernet.h>
 #include "layer2.h"
 
 /* storing a received packet */

@@ -2,15 +2,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <arpa/inet.h>
+#include <net/ethernet.h>
+#include <netinet/ip.h>
 #include <netinet/ip6.h>
 #include <net/if_arp.h>
-#include "layer2.h"
 #include "layer3.h"
 
 /* storing a received packet */
 extern char buf[2000];
 /* for inet_ntop() */
 char addr[30];
+
+struct result {
+  u_int8_t protocol;
+  u_int16_t len;
+};
 
 int layer3(u_int type)
 {
@@ -22,7 +29,8 @@ int layer3(u_int type)
       return disp_ipv4();
 
     case ETHERTYPE_IPV6:
-      return disp_ipv6();
+      disp_ipv6();
+      break;
 
     case ETHERTYPE_ARP:
       disp_arp();
@@ -64,7 +72,7 @@ int disp_ipv4(void)
   return ip4_h->protocol;
 }
 
-int disp_ipv6(void)
+void disp_ipv6(void)
 {
   struct ip6_hdr *ip6_h;
 
@@ -82,9 +90,6 @@ int disp_ipv6(void)
 
   printf("  Next header = %d", ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt);
   putchar('\n');
-
-  /* return protocol number of next header */
-  return ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt;
 }
 
 void disp_arp(void)

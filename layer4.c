@@ -1,11 +1,13 @@
 /* handle layer4 header (tcp, udp, icmp) */
 
 #include <stdio.h>
+#include <arpa/inet.h>
+#include <net/ethernet.h>
+#include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/igmp.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
-#include "layer3.h"
 #include "layer4.h"
 
 /* storing a received packet */
