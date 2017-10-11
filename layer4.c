@@ -1,4 +1,4 @@
-/* handle layer4 header (tcp, udp, icmp) */
+/* handle layer4 (over IPv4) header (tcp, udp, icmp) */
 
 #include <stdio.h>
 #include <arpa/inet.h>
@@ -13,9 +13,8 @@
 /* storing a received packet */
 extern char buf[2000];
 
-void layer4(u_int protocol)
+void layer4(u_int8_t protocol)
 {
-  printf("L4 | ");
   switch (protocol) {
     case 1:
       disp_icmp4();
@@ -46,7 +45,7 @@ void disp_icmp4(void)
   icmp_h = (struct icmphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
   u_int8_t type = icmp_h->type;
-  printf("ICMP Message type = %d (%s)  Code = %d", type, icmp4_type(type), icmp_h->code);
+  printf("ICMP | Message type = %d (%s)  Code = %d", type, icmp4_type(type), icmp_h->code);
 }
 
 char *icmp4_type(u_int8_t type)
@@ -91,7 +90,7 @@ void disp_igmp(void)
 
   igmp_h = (struct igmp *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("IGMP  %s", inet_ntoa(igmp_h->igmp_group));
+  printf("IGMP | %s", inet_ntoa(igmp_h->igmp_group));
 }
 
 void disp_tcp(void)
@@ -100,7 +99,7 @@ void disp_tcp(void)
 
   tcp_h = (struct tcphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("TCP  %17d > %-17d",
+  printf("TCP  | %17d > %-17d",
           ntohs(tcp_h->source), ntohs(tcp_h->dest));
   printf("  Seq = %u  Ack = %u  SYN = %d  ACK = %d  FIN = %d", ntohl(tcp_h->seq),
                                                               ntohl(tcp_h->ack_seq),
@@ -115,5 +114,5 @@ void disp_udp(void)
 
   udp_h = (struct udphdr *)(buf + sizeof(struct ether_header) + sizeof(struct iphdr));
 
-  printf("UDP  %17d > %-17d", ntohs(udp_h->source), ntohs(udp_h->dest));
+  printf("UDP  | %17d > %-17d", ntohs(udp_h->source), ntohs(udp_h->dest));
 }

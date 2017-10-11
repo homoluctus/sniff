@@ -3,5 +3,6 @@
 
 int layer2(void);
 void disp_mac(u_int8_t *mac);
+void disp_arp(void);
 
 #endif

@@ -4,28 +4,45 @@
 #include <sys/types.h>
 #include <net/ethernet.h>
 #include <netinet/ip.h>
+#include <netinet/ip6.h>
+#include <net/if_arp.h>
 
 extern char buf[2000];
 
-void ether_hex(void)
+void disp_hex(int len, char *p)
 {
   int i;
 
-  puts("=============================== HEX ===============================");
-  printf("L2 | ");
-  for (i = 0; i < ETH_HLEN; i++) {
-    printf("%02x%c", (u_int8_t)buf[i], i == ETH_HLEN - 1 ? '\n' : ' ');
+  for (i = 0; i < len; i++) {
+    printf("%02x%c", (u_int8_t)p[i], i == len - 1 ? '\n' : ' ');
   }
 }
 
-void ip_hex(void)
+void ether_hex(void)
 {
-  int i;
-  u_int8_t *p = buf + ETH_HLEN;
-  int len = (p[0] & 0x0f) * 4;    /* header length */
+  char *p;
+  struct ether_header *ether_h = (struct ether_header *)buf;
 
-  printf("L3 | ");
-  for (i = 0; i < len; i++) {
-    printf("%02x%c", p[i], i == len - 1 ? '\n' : ' ');
+  puts("=============================== HEX ===============================");
+  disp_hex(sizeof(struct ether_header), buf);
+
+  if (ntohs(ether_h->ether_type) == ETHERTYPE_ARP) {
+    p = buf + sizeof(struct ether_header);
+    disp_hex(sizeof(struct arphdr), p);
+  }
+}
+
+void l3_hex(u_int type)
+{
+  char *p = buf + ETH_HLEN;
+
+  switch (type) {
+    case ETHERTYPE_IP:
+      disp_hex(sizeof(struct iphdr), p);    /* header length */
+      break;
+
+    case ETHERTYPE_IPV6:
+      disp_hex(sizeof(struct ip6_hdr), p);
+      break;
   }
 }

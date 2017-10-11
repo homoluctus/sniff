@@ -18,8 +18,7 @@ int main(void)
   /* type field of ethernet header */
   u_int type;
   /* protocol field of ipv4 header */
-  u_int protocol;
-  u_int len;
+  u_int8_t protocol;
 
   /* create socket */
   init();
@@ -34,18 +33,24 @@ int main(void)
     /* for layer 3 protocol */
     protocol = layer3(type);
 
-    if (protocol == -1) {
+    if (protocol < -1) {
       ether_hex();
+      putchar('\n');
+      continue;
+    }
+
+    /* for ipv6 */
+    else if (protocol == -1) {
+      ether_hex();
+      l3_hex(type);
       putchar('\n');
       continue;
     }
 
     /* for layer 4 protocol */
     layer4(protocol);
-
     ether_hex();
-    ip_hex();
-
+    l3_hex(type);
     putchar('\n');
   }
 

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 #include <net/ethernet.h>
+#include <net/if_arp.h>
 #include "layer2.h"
 
 /* storing a received packet */
@@ -16,7 +17,7 @@ int layer2(void)
 
   ether_h = (struct ether_header *)buf;
 
-  printf("L2 | MAC  ");
+  printf("MAC  | ");
   disp_mac(ether_h->ether_shost);
   printf(" > ");
   disp_mac(ether_h->ether_dhost);
@@ -30,6 +31,7 @@ int layer2(void)
 
     case ETHERTYPE_ARP:
       puts("(ARP)");
+      disp_arp();
       break;
 
     case ETHERTYPE_REVARP:
@@ -57,4 +59,28 @@ void disp_mac(u_int8_t *mac)
   for (i = 0; i < 6; i++) {
     printf("%02x%s",mac[i], (i != 5) ? ":" : "");
   }
+}
+
+void disp_arp(void)
+{
+  struct arphdr *arp_h;
+
+  arp_h = (struct arphdr *)(buf + sizeof(struct ether_header));
+
+  int op = ntohs(arp_h->ar_op);
+
+  printf("ARP  | ");
+  switch (op) {
+    case 1:
+      printf("Request  ");
+      break;
+
+    case 2:
+      printf("Reply  ");
+      break;
+
+    default:
+      break;
+  }
+  printf("(Opecode = %d)", op);
 }

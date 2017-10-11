@@ -6,7 +6,6 @@
 #include <net/ethernet.h>
 #include <netinet/ip.h>
 #include <netinet/ip6.h>
-#include <net/if_arp.h>
 #include "layer3.h"
 
 /* storing a received packet */
@@ -14,39 +13,27 @@ extern char buf[2000];
 /* for inet_ntop() */
 char addr[30];
 
-struct result {
-  u_int8_t protocol;
-  u_int16_t len;
-};
-
-int layer3(u_int type)
+u_int8_t layer3(u_int type)
 {
-  u_int p;    /* protocol field of ipv4 header */
-
-  printf("L3 | ");
   switch (type) {
     case ETHERTYPE_IP:
       return disp_ipv4();
 
     case ETHERTYPE_IPV6:
       disp_ipv6();
-      break;
-
-    case ETHERTYPE_ARP:
-      disp_arp();
-      break;
+      return -1;
 
     default:
       putchar('\n');
       break;
   }
-
   /* return -1 to avoid duplication with protocol number */
-  return -1;
+  return -2;
 }
 
-int disp_ipv4(void)
+u_int8_t disp_ipv4(void)
 {
+  u_int8_t protocol;
   struct iphdr *ip4_h;
 
   ip4_h = (struct iphdr *)(buf + sizeof(struct ether_header));
@@ -56,7 +43,7 @@ int disp_ipv4(void)
     exit(1);
   }
 
-  printf("IPv4 %17s > ", inet_ntop(AF_INET,
+  printf("IPv4 | %17s > ", inet_ntop(AF_INET,
                                   (const void *)&(ip4_h->saddr),
                                   addr,
                                   sizeof(addr)));
@@ -66,19 +53,22 @@ int disp_ipv4(void)
                             addr,
                             sizeof(addr)));
 
-  printf("  Upper layer protocol = %d", ip4_h->protocol);
+  protocol = ip4_h->protocol;
+
+  printf("  Upper layer protocol = %d", protocol);
   putchar('\n');
 
-  return ip4_h->protocol;
+  return protocol;
 }
 
-void disp_ipv6(void)
+u_int8_t disp_ipv6(void)
 {
+  u_int8_t next_h;
   struct ip6_hdr *ip6_h;
 
   ip6_h = (struct ip6_hdr *)(buf + sizeof(struct ether_header));
 
-  printf("IPv6 %s > ", inet_ntop(AF_INET6,
+  printf("IPv6 | %s > ", inet_ntop(AF_INET6,
                                 (const void *)ip6_h->ip6_src.s6_addr,
                                 addr,
                                 sizeof(addr)));
@@ -88,31 +78,10 @@ void disp_ipv6(void)
                         addr,
                         sizeof(addr)));
 
-  printf("  Next header = %d", ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt);
+  next_h = ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt;
+
+  printf("  Next header = %d", next_h);
   putchar('\n');
-}
 
-void disp_arp(void)
-{
-  struct arphdr *arp_h;
-
-  arp_h = (struct arphdr *)(buf + sizeof(struct ether_header));
-
-  int op = ntohs(arp_h->ar_op);
-
-  printf("ARP  ");
-  switch (op) {
-    case 1:
-      printf("Request  ");
-      break;
-
-    case 2:
-      printf("Reply  ");
-      break;
-
-    default:
-      break;
-  }
-  printf("(Opecode = %d)", op);
-  putchar('\n');
+  return next_h;
 }
