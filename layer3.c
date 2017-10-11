@@ -68,15 +68,18 @@ u_int8_t disp_ipv6(void)
   ip6_h = (struct ip6_hdr *)(buf + sizeof(struct ether_header));
 
   printf("[IPv6] %s > ", inet_ntop(AF_INET6,
-                                (const void *)ip6_h->ip6_src.s6_addr,
-                                addr,
-                                sizeof(addr)));
+                                  (const void *)ip6_h->ip6_src.s6_addr,
+                                  addr,
+                                  sizeof(addr))
+                                  );
 
   printf("%s", inet_ntop(AF_INET6,
                         (const void *)ip6_h->ip6_dst.s6_addr,
                         addr,
-                        sizeof(addr)));
+                        sizeof(addr))
+                        );
 
+  /* next header */
   next_h = ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt;
 
   printf("  Next-header = %d", next_h);

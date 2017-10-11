@@ -62,7 +62,7 @@ void disp_icmp4(int size)
   icmp_h = (struct icmphdr *)(buf + size);
 
   u_int8_t type = icmp_h->type;
-  printf("[ICMPv4] %s (type = %d  Code = %d)", icmp4_type(type), type, icmp_h->code);
+  printf("[ICMPv4] %s (TYPE = %d)", icmp4_type(type), type);
 }
 
 char *icmp4_type(u_int8_t type)
