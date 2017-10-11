@@ -31,10 +31,13 @@ int main(void)
      * type that is less than 0 is not supported
      */
     if ((type = layer2()) < 0) continue;
+
     /* for layer 3 protocol */
     protocol = layer3((u_int)type);
+
     /* protocol that is less than 0 is not supported */
     if (protocol < 0) continue;
+
     /* for layer 4 protocol */
     layer4((u_int16_t)type, (u_int8_t)protocol);
     putchar('\n');
