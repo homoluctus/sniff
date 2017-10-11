@@ -9,16 +9,15 @@
 #include "layer2.h"
 #include "layer3.h"
 #include "layer4.h"
-#include "buffer.h"
 
 int main(void)
 {
   /* the number to capture packets (default: 5 packets) */
   int count = 5;
   /* type field of ethernet header */
-  u_int type;
+  int type;
   /* protocol field of ipv4 header */
-  u_int8_t protocol;
+  int protocol;
 
   /* create socket */
   init();
@@ -27,32 +26,18 @@ int main(void)
     receive_packet();
 
     puts("============================= HEADER ==============================");
-    /* for layer 2 protocol */
-    type = layer2();
-
+    /*
+     * for layer 2 protocol
+     * type that is less than 0 is not supported
+     */
+    if ((type = layer2()) < 0) continue;
     /* for layer 3 protocol */
-    protocol = layer3(type);
-
-    if (protocol < -1) {
-      ether_hex();
-      putchar('\n');
-      continue;
-    }
-
-    /* for ipv6 */
-    else if (protocol == -1) {
-      ether_hex();
-      l3_hex(type);
-      putchar('\n');
-      continue;
-    }
-
+    protocol = layer3((u_int)type);
+    /* protocol that is less than 0 is not supported */
+    if (protocol < 0) continue;
     /* for layer 4 protocol */
-    layer4(protocol);
-    ether_hex();
-    l3_hex(type);
+    layer4((u_int16_t)type, (u_int8_t)protocol);
     putchar('\n');
   }
-
   return 0;
 }

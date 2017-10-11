@@ -13,22 +13,21 @@ extern char buf[2000];
 /* for inet_ntop() */
 char addr[30];
 
-u_int8_t layer3(u_int type)
+int layer3(u_int type)
 {
   switch (type) {
     case ETHERTYPE_IP:
       return disp_ipv4();
 
     case ETHERTYPE_IPV6:
-      disp_ipv6();
-      return -1;
+      return disp_ipv6();
 
     default:
       putchar('\n');
       break;
   }
   /* return -1 to avoid duplication with protocol number */
-  return -2;
+  return -1;
 }
 
 u_int8_t disp_ipv4(void)
@@ -43,19 +42,19 @@ u_int8_t disp_ipv4(void)
     exit(1);
   }
 
-  printf("IPv4 | %17s > ", inet_ntop(AF_INET,
+  printf("[IPv4] %s > ", inet_ntop(AF_INET,
                                   (const void *)&(ip4_h->saddr),
                                   addr,
                                   sizeof(addr)));
 
-  printf("%-17s", inet_ntop(AF_INET,
+  printf("%s", inet_ntop(AF_INET,
                             (const void *)&(ip4_h->daddr),
                             addr,
                             sizeof(addr)));
 
   protocol = ip4_h->protocol;
 
-  printf("  Upper layer protocol = %d", protocol);
+  printf(" Upper-layer-protocol = %d", protocol);
   putchar('\n');
 
   return protocol;
@@ -68,7 +67,7 @@ u_int8_t disp_ipv6(void)
 
   ip6_h = (struct ip6_hdr *)(buf + sizeof(struct ether_header));
 
-  printf("IPv6 | %s > ", inet_ntop(AF_INET6,
+  printf("[IPv6] %s > ", inet_ntop(AF_INET6,
                                 (const void *)ip6_h->ip6_src.s6_addr,
                                 addr,
                                 sizeof(addr)));
@@ -80,7 +79,7 @@ u_int8_t disp_ipv6(void)
 
   next_h = ip6_h->ip6_ctlun.ip6_un1.ip6_un1_nxt;
 
-  printf("  Next header = %d", next_h);
+  printf("  Next-header = %d", next_h);
   putchar('\n');
 
   return next_h;

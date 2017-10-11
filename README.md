@@ -11,7 +11,7 @@ This is CUI application
 - ARP
 - TCP
 - UDP
-- ICMPv4
+- ICMPv4/v6
 - IGMP
 
 By defalut, this sniffer captures 5 packets

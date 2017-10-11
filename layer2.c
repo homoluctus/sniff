@@ -12,22 +12,22 @@ extern char buf[2000];
 
 int layer2(void)
 {
-  u_int type;
+  int type;
   struct ether_header *ether_h;
 
   ether_h = (struct ether_header *)buf;
 
-  printf("MAC  | ");
+  printf("[Ethernet] ");
   disp_mac(ether_h->ether_shost);
   printf(" > ");
   disp_mac(ether_h->ether_dhost);
 
   type = ntohs(ether_h->ether_type);
-  printf("  TYPE = 0x%04x ", type);
+  printf(" TYPE = 0x%04x ", type);
   switch (type) {
     case ETHERTYPE_IP:
       puts("(IPv4)");
-      break;
+      return type;
 
     case ETHERTYPE_ARP:
       puts("(ARP)");
@@ -44,13 +44,14 @@ int layer2(void)
 
     case ETHERTYPE_IPV6:
       puts("(IPv6)");
-      break;
+      return type;
 
     default:
-      putchar('\n');
       break;
   }
-  return type;
+  puts("\n");
+
+  return -1;
 }
 
 void disp_mac(u_int8_t *mac)
@@ -69,14 +70,14 @@ void disp_arp(void)
 
   int op = ntohs(arp_h->ar_op);
 
-  printf("ARP  | ");
+  printf("[ARP] ");
   switch (op) {
     case 1:
-      printf("Request  ");
+      printf("Request ");
       break;
 
     case 2:
-      printf("Reply  ");
+      printf("Reply ");
       break;
 
     default:
