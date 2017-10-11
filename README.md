@@ -6,8 +6,7 @@ This is CUI application
 
 ### Supported protocols
 - Ethernet
-- IPv4
-- IPv6
+- IPv4/v6
 - ARP
 - TCP
 - UDP
