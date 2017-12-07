@@ -15,8 +15,6 @@ This is CUI application
 
 By defalut, this sniffer captures 5 packets
 
-If you want to continue capturing packets infinitely, you change argument of while function on main.c from default to 1
-
 # Usage
 ```
 $ git clone https://github.com/homoluctus/sniffer.git
