@@ -4,13 +4,47 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include "init.h"
 #include "layer2.h"
 #include "layer3.h"
 #include "layer4.h"
 
-int main(void)
+int option(int argc, char **argv)
+{
+  int option, ret;
+
+  while ((option = getopt(argc, argv, "hn:")) != -1) {
+    switch (option) {
+      case 'h':    /* display help */
+        fprintf(stdout, "Usage:\t./main [OPTION]\n\nOption:\n\t-n [NUMBER]:\tthe nubmer of captured packet (default is 5)\n\t-h:\t\tdisplay information\n");
+        ret = 0;
+        break;
+      case 'n':    /* set the number of captured packet */
+        ret = atoi(optarg);
+        break;
+      case '?':
+        if (optopt == 'n') {
+          fprintf(stderr, "Format: ./main -n [NUMBER]\n");
+        } else if (isprint(optopt)) {
+          fprintf(stderr, "[!] Error: Unkown option is %c\n", optopt);
+        } else {
+          fprintf(stderr, "[!] Error: Unkown option\n");
+        }
+        ret = -1;
+        break;
+      default:
+        fprintf(stderr, "[!] Error: Unknown error occurred\n");
+        ret = -1;
+    }
+  }
+  return ret;
+}
+
+int main(int argc, char **argv)
 {
   /* the number to capture packets (default: 5 packets) */
   int count = 5;
@@ -18,6 +52,12 @@ int main(void)
   int type;
   /* protocol field of ipv4 header */
   int protocol;
+
+  if ((count = option(argc, argv)) < 0) {
+    exit(EXIT_FAILURE);
+  } else if (count == 0) {
+    exit(EXIT_SUCCESS);
+  }
 
   /* create socket */
   init();
