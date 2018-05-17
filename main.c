@@ -13,7 +13,7 @@
 #include "layer3.h"
 #include "layer4.h"
 
-int option(int argc, char **argv)
+int get_option(int argc, char **argv)
 {
   int option, ret;
 
@@ -38,7 +38,7 @@ int option(int argc, char **argv)
         break;
       default:
         fprintf(stderr, "[!] Error: Unknown error occurred\n");
-        ret = -1;
+        ret = -2;
     }
   }
   return ret;
@@ -46,14 +46,18 @@ int option(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-  /* the number to capture packets (default: 5 packets) */
-  int count = 5;
   /* type field of ethernet header */
   int type;
   /* protocol field of ipv4 header */
   int protocol;
+  /* the number to capture packets (default: 5 packets) */
+  int count;
 
-  if ((count = option(argc, argv)) < 0) {
+  /* option is none if argc equal 1 */
+  if (argc == 1) {
+    /* default the number of captured packets is 5 */
+    count =  5;
+  } else if ((count = get_option(argc, argv)) < 0) {
     exit(EXIT_FAILURE);
   } else if (count == 0) {
     exit(EXIT_SUCCESS);
